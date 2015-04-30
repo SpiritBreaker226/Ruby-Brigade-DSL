@@ -1,6 +1,6 @@
 class FancyMarkup
 	def initialize
-		@output = ""
+		@html_page = ""
 		@tab_level = 0
 	end
 	
@@ -25,26 +25,26 @@ class FancyMarkup
 	end
 
 	def render(tag_type, attributes, tag_inner_content = "", &block)
-		@output += "#{add_tabs(@tab_level)}<#{tag_type}"
-		@output += " " << attributes.map { |key, value| "#{key}=\"#{value}\"" }.join(" ") unless attributes.empty?
-		@output += ">"
+		@html_page += "#{add_tabs(@tab_level)}<#{tag_type}"
+		@html_page += " " << attributes.map { |key, value| "#{key}=\"#{value}\"" }.join(" ") unless attributes.empty?
+		@html_page += ">"
 		
-		block_given? ? inner_tag(&block) : @output += tag_inner_content
+		block_given? ? inner_tag(&block) : @html_page += tag_inner_content
 
-		@output += "</#{tag_type}>\n"
+		@html_page += "</#{tag_type}>\n"
 	end
 
 	private
 	def inner_tag(&block)
 		@tab_level += 1 
 
-		@output += "\n"
+		@html_page += "\n"
 
 		instance_eval(&block)
 
 		@tab_level -= 1
 
-		@output += "#{add_tabs(@tab_level)}"
+		@html_page += "#{add_tabs(@tab_level)}"
 	end
 
 	def add_tabs(number_tabs)
